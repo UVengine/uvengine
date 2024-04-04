@@ -1,0 +1,10 @@
+{
+  "file": "compose_specification.uvl",
+  "config": {
+    "Services": [
+      {
+        "Services": false
+      }
+    ]
+  }
+}

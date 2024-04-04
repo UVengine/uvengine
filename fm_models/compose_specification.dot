@@ -1,0 +1,57 @@
+digraph FeatureModel {
+rankdir="TB"
+newrank=true
+bgcolor="#1e1e1e"
+edge [color=white]
+node [style=filled fontcolor="white" fontname="Arial Unicode MS, Arial"];
+
+SpecificationVersion [fillcolor="#ABACEA" tooltip="Cardinality: None" shape="box"]
+DockerCompose -> SpecificationVersion [arrowhead="odot", arrowtail="none", dir="both"]
+ProjectName [fillcolor="#ABACEA" tooltip="Cardinality: None" shape="box"]
+DockerCompose -> ProjectName [arrowhead="odot", arrowtail="none", dir="both"]
+ServiceName [fillcolor="#ABACEA" tooltip="Cardinality: None" shape="box"]
+Services -> ServiceName [arrowhead="dot", arrowtail="none", dir="both"]
+Image [fillcolor="#ABACEA" tooltip="Cardinality: None" shape="box"]
+Services -> Image [arrowhead="odot", arrowtail="none", dir="both"]
+BuildContext [fillcolor="#ABACEA" tooltip="Cardinality: None" shape="box"]
+Build -> BuildContext [arrowhead="odot", arrowtail="none", dir="both"]
+DockerFile [fillcolor="#ABACEA" tooltip="Cardinality: None" shape="box"]
+AlternateDockerFile -> DockerFile [arrowhead="none", arrowtail="odot", dir="both"]
+InlineDockerFile [fillcolor="#ABACEA" tooltip="Cardinality: None" shape="box"]
+AlternateDockerFile -> InlineDockerFile [arrowhead="none", arrowtail="odot", dir="both"]
+AlternateDockerFile [fillcolor="#ABACEA" tooltip="Cardinality: None" shape="invhouse"]
+Build -> AlternateDockerFile [arrowhead="odot", arrowtail="none", dir="both"]
+ContextPath [fillcolor="#ABACEA" tooltip="Cardinality: None" shape="box"]
+Context -> ContextPath [arrowhead="none", arrowtail="odot", dir="both"]
+GitBranch [fillcolor="#ABACEA" tooltip="Cardinality: None" shape="box"]
+URLGitRepository -> GitBranch [arrowhead="none", arrowtail="none", dir="both"]
+GitTag [fillcolor="#ABACEA" tooltip="Cardinality: None" shape="box"]
+URLGitRepository -> GitTag [arrowhead="none", arrowtail="none", dir="both"]
+ContextSubdirectory [fillcolor="#ABACEA" tooltip="Cardinality: None" shape="box"]
+URLGitRepository -> ContextSubdirectory [arrowhead="odot", arrowtail="none", dir="both"]
+URLGitRepository [fillcolor="#ABACEA" tooltip="Cardinality: None" shape="box"]
+Context -> URLGitRepository [arrowhead="none", arrowtail="odot", dir="both"]
+Context [fillcolor="#ABACEA" tooltip="Cardinality: None" shape="invhouse"]
+Build -> Context [arrowhead="dot", arrowtail="none", dir="both"]
+Build [fillcolor="#ABACEA" tooltip="Cardinality: None" shape="box"]
+Services -> Build [arrowhead="odot", arrowtail="none", dir="both"]
+Deploy [fillcolor="#ABACEA" tooltip="Cardinality: None" shape="box"]
+Services -> Deploy [arrowhead="odot", arrowtail="none", dir="both"]
+Annotations [fillcolor="#ABACEA" tooltip="Cardinality: None" shape="box"]
+Services -> Annotations [arrowhead="odot", arrowtail="none", dir="both"]
+Attach [fillcolor="#ABACEA" tooltip="Cardinality: None" shape="box"]
+Services -> Attach [arrowhead="odot", arrowtail="none", dir="both"]
+Blkio_Config [fillcolor="#ABACEA" tooltip="Cardinality: None" shape="box"]
+Services -> Blkio_Config [arrowhead="odot", arrowtail="none", dir="both"]
+Services [fillcolor="#ABACEA" tooltip="Cardinality: Some(Range(0, 1))" shape="box"]
+DockerCompose -> Services [arrowhead="dot", arrowtail="none", dir="both"]
+DockerCompose [fillcolor="#ABACEA" tooltip="Cardinality: None" shape="box"]
+
+
+subgraph cluster_constraints{
+    label="Constraints" color="white" fontcolor="white"
+    constraints [shape="box" color="#1e1e1e" label=<<table border="0" cellpadding="0" cellspacing="0" cellborder="0">
+        <tr><td align="left">BuildContext =&gt; !AlternateDockerFile</td></tr>
+</table>>]
+}
+}
