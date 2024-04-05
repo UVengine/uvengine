@@ -1,0 +1,28 @@
+features
+    "Ice Cream" {abstract}
+        mandatory
+            Category
+                alternative
+                    Popsicle {Price 1}
+                    Integer Scoop {Price 2}
+            Flavors
+                or
+                    Lemon
+                    Chocolate cardinality [1..3]
+                        alternative
+                            White
+                            Dark
+            Container
+                alternative
+                    Stick
+                    Cup
+                    Cone
+
+        optional
+            Waffle {Price 0.7}
+            String "Name of customer"
+
+constraints
+    Popsicle => Stick
+    (Scoop >= 0) & (Scoop > 0 => Cup | Cone)
+    

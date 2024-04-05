@@ -1,3 +1,6 @@
+imports
+    compose_build_specification as ComposeBuildSpecification
+
 features
     DockerCompose {abstract}
         optional
@@ -9,28 +12,10 @@ features
                     String ServiceName
                 optional
                     String Image  // Push built image to a registry.
-                    Build
-                        optional
-                            BuildContext  // Context path or URLGitRepository
-                            AlternateDockerFile {abstract}
-                                alternative
-                                    String DockerFile
-                                    String InlineDockerFile  // YAML multi-line string syntax to define the Dockerfile content
-                        mandatory
-                            Context {abstract}
-                                alternative
-                                    String ContextPath  {default '.'}  // Context path
-                                    String URLGitRepository
-                                        [0..1]
-                                            String GitBranch
-                                            String GitTag
-                                        optional
-                                            ContextSubdirectory
-                        optional
-                            
+                    ComposeBuildSpecification.Build
                     Deploy
+                    Develop
                     Annotations
                     Attach
                     Blkio_Config
 constraints
-    BuildContext => !AlternateDockerFile

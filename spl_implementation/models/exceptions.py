@@ -1,5 +1,4 @@
-class MappingModelException(Exception):
-    pass
+
 
 
 class ConfigurationValueException(Exception):

@@ -1,0 +1,42 @@
+{% if Cone %}
+       ()
+      (__)
+     (____)
+    (______)  x {{Scoop}}
+   (________) {{Lemon}} {% for choco in Chocolate %}{{choco.White}} {{choco.Dark}}{% endfor %}
+  (__________)
+   \/\/\/\/\/
+    \/\/\/\/
+     \/\/\/
+      \/\/
+       \/  {% if CustomerName %}{{CustomerName}}{% endif %}
+{% endif %}
+{% if Cup %}
+     . ,
+      *    ,
+ ` *~.|,~* '
+ '  ,~*~~* `     _
+  ,* / \`* '    //
+   ,* ; \,O.   //
+       ,(:::)=//  x {{Scoop}}
+      (  `~(###)  {{Lemon}} {% for choco in Chocolate %}{{choco.White}} {{choco.Dark}}{% endfor %}
+       %---'`"y
+        \    /
+         \  /
+        __)(__  {% if CustomerName %}{{CustomerName}}{% endif %}
+       '------`
+{% endif %}
+{% if Stick %}
+         _.-.
+       ,'/ //\
+      /// // /)
+     /// // //|  {{Lemon}} {% for choco in Chocolate %}{{choco.White}} {{choco.Dark}}{% endfor %}
+    /// // ///
+   /// // ///
+  (`: // ///
+   `;`: ///
+   / /:`:/
+  / /  `'
+ / /
+(_/  {% if CustomerName %}{{CustomerName}}{% endif %}
+{% endif %}
