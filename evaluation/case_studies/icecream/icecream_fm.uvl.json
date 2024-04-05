@@ -19,8 +19,8 @@
       }
     ],
     "Container": true,
-    "Stick": true,
-    "Cup": false,
+    "Stick": false,
+    "Cup": true,
     "Cone": false,
     "Waffle": false,
     "Waffle.Price": 0.7,

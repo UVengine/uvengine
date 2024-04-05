@@ -1,12 +1,10 @@
-from .variation_point import VariationPoint, Variant
+from .configuration import Configuration
 from .mapping_model import MappingModel, MappingModelException
 from .vengine import VEngine
-from .configuration import Configuration
 
 
-__all__ = ['VariationPoint',
-           'Variant',
+__all__ = ['Configuration',
            'MappingModel',
            'MappingModelException',
            'VEngine',
-           'Configuration']
+]

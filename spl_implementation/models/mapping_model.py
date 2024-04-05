@@ -1,28 +1,35 @@
 import csv
+from typing import Any
 from enum import Enum
 
-from spl_implementation.models import VariationPoint, Variant
 
+class FeatureHandlerMap:
+
+    def __init__(self, feature: str, handler: str, value: Any) -> None:
+        self.feature: str = feature
+        self.handler: str = handler
+        self.value: Any = value
+
+    def __repr__(self) -> str:  
+        return f'M({self.feature}, {self.handler}, {self.value})'
+    
 
 class MappingModel:
-    """A mapping model relates a feature model with the variation points and variants of the 
-    implementation artefacts.
-    """
+    """A mapping model relates a feature model with the implementation artefacts."""
 
     class Fieldnames(Enum):
-        VARIATION_POINT = 'VariationPointFeature'
-        HANDLER = 'TemplateHandler'
-        VARIANT = 'VariantIdentifier'
-        VALUE = 'VariantValue'
+        FEATURE = 'Feature'
+        HANDLER = 'Handler'
+        VALUE = 'Value'
 
     def __init__(self) -> None:
-        self._model: dict[str, VariationPoint] = dict()
+        self.maps: dict[str, FeatureHandlerMap] = dict()
 
     @classmethod
     def load_from_file(cls, filepath: str) -> 'MappingModel': 
         """Load the mapping model with the variation points and variants information."""
-        model: dict[str, 'VariationPoint'] = {}
-        with open(filepath, mode='r') as file:
+        model: dict[str, FeatureHandlerMap] = {}
+        with open(filepath, mode='r', encoding='utf-8') as file:
             csv_reader = csv.DictReader(file, skipinitialspace=True)
             if any(head not in [fieldname.value for fieldname in MappingModel.Fieldnames] 
                    for head in csv_reader.fieldnames):
@@ -31,22 +38,15 @@ class MappingModel:
                                             {[fieldname.value 
                                               for fieldname in MappingModel.Fieldnames]}")
             for row in csv_reader:
-                vp_feature = row[MappingModel.Fieldnames.VARIATION_POINT]
-                vp_handler = row[MappingModel.Fieldnames.HANDLER]
-                variant_feature = row[MappingModel.Fieldnames.VARIANT]
-                variant_value = row[MappingModel.Fieldnames.VALUE]
-                if not vp_feature in model:
-                    model[vp_feature] = VariationPoint(vp_feature, vp_handler)
-                if not variant_value:
-                    variant_value = None
-                variant = Variant(variant_feature, variant_value)
-                model[vp_feature].variants.append(variant)
+                feature = row[MappingModel.Fieldnames.FEATURE.value]
+                handler = row[MappingModel.Fieldnames.HANDLER.value]
+                value = row[MappingModel.Fieldnames.VALUE.value]
+                if not value:
+                    value = None
+                model[feature] = FeatureHandlerMap(feature, handler, value)
         mapping_model = cls()
-        mapping_model._model = model
+        mapping_model.maps = model
         return mapping_model
-    
-    def get_variation_points(self) -> list[VariationPoint]:
-        return list(self._model.values())
 
 
 class MappingModelException(Exception):
