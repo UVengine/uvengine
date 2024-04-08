@@ -1,3 +1,4 @@
+import os
 import json
 from typing import Any
 
@@ -21,7 +22,7 @@ class VEngine:
         if self._mapping_model is None:
             raise VEngineException(f'No mapping model has been loaded.')
             
-        template_loader = jinja2.FileSystemLoader(searchpath="./")
+        template_loader = jinja2.FileSystemLoader(searchpath=self._template_dirpath)
         environment = jinja2.Environment(loader=template_loader)
         template = environment.get_template(self._template_file)
         maps = self._build_template_maps(self._configuration.elements)
@@ -35,8 +36,10 @@ class VEngine:
     def load_configuration(self, configuration_filepath: str) -> None:
         self._configuration = load_configuration_from_file(configuration_filepath)
 
-    def load_template(self, template_file: str) -> None:
-        self._template_file = template_file
+    def load_template(self, template_filepath: str) -> None:
+        path, filename = os.path.split(template_filepath)
+        self._template_dirpath = path
+        self._template_file = filename
 
     def _build_template_maps(self, config_elements: dict[str, Any]) -> dict[str, Any]:
         maps: dict[str, Any] = {}  # dict of 'handler' -> Value

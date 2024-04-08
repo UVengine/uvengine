@@ -24,5 +24,5 @@ features
 
 constraints
     Popsicle => Stick
-    (Scoop >= 0) & (Scoop > 0 => Cup | Cone)
+    (Scoop > 0) & (Scoop > 0 => Cup | Cone)
     

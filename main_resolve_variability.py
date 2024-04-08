@@ -47,6 +47,6 @@ if __name__ == '__main__':
     vengine = VEngine()
     vengine.load_configuration('evaluation/case_studies/icecream/icecream_fm.uvl.json')
     vengine.load_mapping_model('evaluation/case_studies/icecream/icecream_mapping.csv')
-    vengine.load_template('evaluation/case_studies/icecream/icecream_template.txt.jinja')
+    vengine.load_template('evaluation/case_studies/icecream/templates/icecream_template.txt.jinja')
     result = vengine.resolve_variability()
     print(result)

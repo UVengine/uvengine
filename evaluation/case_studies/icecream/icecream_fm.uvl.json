@@ -5,7 +5,7 @@
     "Category": true,
     "Popsicle": true,
     "Flavors": true,
-    "Lemon": true,
+    "Lemon": false,
     "Chocolate": [
       {
         "Chocolate": true,
@@ -20,8 +20,8 @@
     ],
     "Container": true,
     "Stick": false,
-    "Cup": true,
-    "Cone": false,
+    "Cup": false,
+    "Cone": true,
     "Waffle": false,
     "Waffle.Price": 0.7,
     "\"Name of customer\"": "Josemi"
