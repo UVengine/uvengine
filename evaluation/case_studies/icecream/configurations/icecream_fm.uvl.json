@@ -3,7 +3,8 @@
   "config": {
     "\"Ice Cream\"": true,
     "Category": true,
-    "Popsicle": true,
+    "Popsicle": false,
+    "Scoop": 2,
     "Flavors": true,
     "Lemon": false,
     "Chocolate": [

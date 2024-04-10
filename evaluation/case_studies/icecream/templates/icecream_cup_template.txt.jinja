@@ -4,10 +4,13 @@
  '  ,~*~~* `     _
   ,* / \`* '    //
    ,* ; \,O.   //
-       ,(:::)=//  x {{Scoop}}
-      (  `~(###)  {{Lemon}} {% for choco in Chocolate %}{{choco.White}} {{choco.Dark}}{% endfor %}
+       ,(:::)=//
+{% for flavor in Flavors %}
+      ({{flavor.Lemon}}{{flavor.Vanilla}}{{flavor.White}}{{flavor.Dark}} )
+{% endfor %}
+      (  `~(###)
        %---'`"y
         \    /
          \  /
-        __)(__  {% if CustomerName %}{{CustomerName}}{% endif %}
+        __)(__  {% if CustomerName %}{{CustomerName}}{% endif +%}
        '------`

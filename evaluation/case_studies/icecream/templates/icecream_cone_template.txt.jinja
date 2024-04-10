@@ -1,8 +1,10 @@
        ()
       (__)
      (____)
-    (______)  x {{Scoop}}
-   (________) {{Lemon}} {% for choco in Chocolate %}{{choco.White}} {{choco.Dark}}{% endfor %}
+    (______)
+{% for flavor in Flavors %}
+   ({{flavor.Lemon}}{{flavor.Vanilla}}{{flavor.White}}{{flavor.Dark}} )
+{% endfor %}
   (__________)
    \/\/\/\/\/
     \/\/\/\/

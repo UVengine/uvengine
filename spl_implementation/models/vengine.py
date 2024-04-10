@@ -23,7 +23,9 @@ class VEngine:
             raise VEngineException(f'No mapping model has been loaded.')
             
         template_loader = jinja2.FileSystemLoader(searchpath=self._template_dirpath)
-        environment = jinja2.Environment(loader=template_loader)
+        environment = jinja2.Environment(loader=template_loader,
+                                         trim_blocks=True,
+                                         lstrip_blocks=True)
         template = environment.get_template(self._template_file)
         maps = self._build_template_maps(self._configuration.elements)
         print(maps)
@@ -43,19 +45,21 @@ class VEngine:
 
     def _build_template_maps(self, config_elements: dict[str, Any]) -> dict[str, Any]:
         maps: dict[str, Any] = {}  # dict of 'handler' -> Value
-        for element, element_value in config_elements.items():
-            if element in self._mapping_model.maps:
-                if element_value:
+        for element, element_value in config_elements.items():  # for each element in the configuration
+            handler = element
+            value = element_value
+            if element_value:  # if the feature is selected or has a valid value (not None for typed features)
+                # The handler is provided in the mapping model, otherwise it is the feature's name.
+                if element in self._mapping_model.maps:
                     handler = self._mapping_model.maps[element].handler
-                    key = handler
-                    if '.' in handler:
-                        key = handler[handler.index('.')+1:]
+                    if '.' in handler:  # case of multi-feature explicitly specified in the mapping model
+                        handler = handler[handler.index('.')+1:]
                     value = self._mapping_model.maps[element].value
-                    if value is None:
-                        value = element_value
-                    if isinstance(element_value, list):
-                        value = [self._build_template_maps(ev) for ev in element_value]
-                    maps[key] = value
+                if value is None:  # the value is provided in the mapping model, otherwise is got from the configuration
+                    value = element_value
+                if isinstance(element_value, list):  # Multi-feature in the configuration
+                    value = [self._build_template_maps(ev) for ev in element_value]
+                maps[handler] = value
         return maps
 
 

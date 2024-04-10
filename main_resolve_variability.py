@@ -9,6 +9,12 @@ from spl_implementation.utils import utils
 from spl_implementation.models import VEngine
 
 # CONSTANTS
+CASE_STUDY = 'icecream'
+BASE_PATH  = os.path.join('evaluation', 'case_studies')
+FM_MODEL_PATH = os.path.join(BASE_PATH, CASE_STUDY, 'fm_models', f'{CASE_STUDY}_fm.uvl')
+CONFIGURATION_PATH = os.path.join(BASE_PATH, CASE_STUDY, 'configurations', f'{CASE_STUDY}_fm_cone.uvl.json')
+TEMPLATE_PATH = os.path.join(BASE_PATH, CASE_STUDY, 'templates', f'{CASE_STUDY}_template.txt.jinja')
+MAPPING_MODEL_PATH = os.path.join(BASE_PATH, CASE_STUDY, 'mapping_models', f'{CASE_STUDY}_mapping.csv')
 
 
 if __name__ == '__main__':
@@ -44,9 +50,13 @@ if __name__ == '__main__':
     # else:
     #     print('|-Error: Wrong mapping model file extension. Use a .csv file.')
 
+    fm_model_path = FM_MODEL_PATH
+    configuration_path = CONFIGURATION_PATH
+    template_path = TEMPLATE_PATH
+    mapping_model_path = MAPPING_MODEL_PATH
     vengine = VEngine()
-    vengine.load_configuration('evaluation/case_studies/icecream/icecream_fm.uvl.json')
-    vengine.load_mapping_model('evaluation/case_studies/icecream/icecream_mapping.csv')
-    vengine.load_template('evaluation/case_studies/icecream/templates/icecream_template.txt.jinja')
+    vengine.load_configuration(configuration_path)
+    vengine.load_mapping_model(mapping_model_path)
+    vengine.load_template(template_path)
     result = vengine.resolve_variability()
     print(result)

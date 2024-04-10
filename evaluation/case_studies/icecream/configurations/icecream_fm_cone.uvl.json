@@ -1,0 +1,25 @@
+{
+  "file": "icecream_fm.uvl",
+  "config": {
+    "Popsicle": false,
+    "Scoop": true,
+    "Cone": true,
+    "Flavors": [
+      {
+        "Flavors": true,
+        "Lemon": true
+      },
+      {
+        "Flavors": true,
+        "Chocolate": true,
+        "Dark": true
+      },
+      {
+        "Flavors": true,
+        "Vanilla": true
+      }
+    ],
+    "Waffle": false,
+    "Name of customer": "Josemi"
+  }
+}

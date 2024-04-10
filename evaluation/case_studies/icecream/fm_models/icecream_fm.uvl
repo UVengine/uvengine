@@ -4,11 +4,12 @@ features
             Category
                 alternative
                     Popsicle {Price 1}
-                    Integer Scoop {Price 2}
-            Flavors
-                or
+                    Scoop {Price 2}
+            Flavors cardinality [1..*]
+                alternative
                     Lemon
-                    Chocolate cardinality [1..3]
+                    Vanilla
+                    Chocolate
                         alternative
                             White
                             Dark
@@ -17,12 +18,16 @@ features
                     Stick
                     Cup
                     Cone
-
         optional
+            Topping
+                or
+                    Integer Fruit {Price 0.5}
+                    Candies
+                    Sprinkle
             Waffle {Price 0.7}
             String "Name of customer"
 
 constraints
     Popsicle => Stick
-    (Scoop > 0) & (Scoop > 0 => Cup | Cone)
+    Scoop => Cup | Cone
     
