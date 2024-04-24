@@ -6,15 +6,14 @@ with open("README.md", "r") as fh:
 
 
 setuptools.setup(
-    name="flamapy-fm",
-    version="1.6.0.dev0",
-    author="Flamapy",
-    author_email="flamapy@us.es",
-    description="flamapy-fm is a plugin to Flamapy module",
+    name="uvengine",
+    version="1.0.0",
+    author="Jose Miguel Horcas",
+    author_email="horcas@uma.es",
+    description="Variability resolution engine for UVL models and text-based implementation artifacts.",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/flamapy/fm_metamodel",
-    packages=setuptools.find_namespace_packages(include=['flamapy.*']),
+    url="https://github.com/jmhorcas/spl_implementation",
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)",
@@ -22,21 +21,8 @@ setuptools.setup(
     ],
     python_requires='>=3.9',
     install_requires=[
-        'flamapy~=1.6.0.dev0',
-        'uvlparser~=2.0.1',
-        'afmparser~=1.0.3',
-    ],
-    extras_require={
-        'dev': [
-            'pytest',
-            'pytest-mock',
-            'prospector',
-            'mypy',
-            'coverage',            
-            'antlr4-tools',
-        ]
-    },
-    dependency_links=[
-        'flamapy~=1.6.0.dev0',
-    ],
+        'flamapy~=1.1.3',
+        'flamapy-fm~=1.1.3',
+        'Jinja2~=3.1.3'
+    ]
 )
