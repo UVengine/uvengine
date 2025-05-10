@@ -1,0 +1,26 @@
+{
+  "file": "jMetal.uvl",
+  "config": {
+    "jMetal": true,
+    "Algorithm": true,
+    "EvolutionaryAlgorithm": true,
+    "GeneticAlgorithm": true,
+    "GeneticAlgorithmType": true,
+    "NSGAII": true,
+    "MaxEvaluations": 25000,
+    "MaxPopulationSize": 100,
+    "Operator": true,
+    "Crossover": true,
+    "CrossoverType": true,
+    "SBX": true,
+    "CrossoverProbability": 0.9,
+    "CrossoverDistributionIndex": 20.0,
+    "Mutation": true,
+    "MutationType": true,
+    "Polynomial": true,
+    "MutationProbability": 1.0,
+    "MutationDistributionIndex": 20.0,
+    "Selection": true,
+    "BinaryTournament": true
+  }
+}

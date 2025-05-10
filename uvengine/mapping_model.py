@@ -3,7 +3,11 @@ from typing import Any
 from enum import Enum
 
 
-class FeatureHandlerMap:
+class MappingModelException(Exception):
+    pass
+
+
+class FeatureHandlerMap():
 
     def __init__(self, feature: str, handler: str, value: Any) -> None:
         self.feature: str = feature
@@ -12,9 +16,9 @@ class FeatureHandlerMap:
 
     def __repr__(self) -> str:  
         return f'M({self.feature}, {self.handler}, {self.value})'
-    
 
-class MappingModel:
+
+class MappingModel():
     """A mapping model relates a feature model with the implementation artefacts."""
 
     class Fieldnames(Enum):
@@ -41,13 +45,10 @@ class MappingModel:
                 feature = row[MappingModel.Fieldnames.FEATURE.value]
                 handler = row[MappingModel.Fieldnames.HANDLER.value]
                 value = row[MappingModel.Fieldnames.VALUE.value]
-                if not value:
-                    value = None
                 model[feature] = FeatureHandlerMap(feature, handler, value)
         mapping_model = cls()
         mapping_model.maps = model
         return mapping_model
 
 
-class MappingModelException(Exception):
-    pass
+

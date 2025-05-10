@@ -1,54 +1,49 @@
-import os
 import json
+import pathlib
 from typing import Any
 
 import jinja2
 
-from spl_implementation.models import Configuration, MappingModel
+from uvengine.configuration import Configuration
+from uvengine.mapping_model import MappingModel
 
 
-class VEngine:
+class UVEngine():
 
-    def __init__(self) -> None:
-        self._template_file: str = None
-        self._configuration: Configuration = None
+    def __init__(self,
+                 template_filepath: str,
+                 config_filepath: str,
+                 mapping_filepath: str = None) -> None:
+        self._template_dirpath: str = pathlib.Path(template_filepath).parent
+        self._template_filepath: str = template_filepath
+        self._config_file: str = config_filepath
+        self._mapping_file: str | None = mapping_filepath
+        
+        self._configuration: Configuration = load_configuration_from_file(self._config_file)
         self._mapping_model: MappingModel = None
+        if self._mapping_file is not None:
+            self._mapping_model = MappingModel.load_from_file(self._mapping_file)
+
 
     def resolve_variability(self) -> str:
-        if self._template_file is None: 
-            raise VEngineException(f'No template has been loaded.')
-        if self._configuration is None:
-            raise VEngineException(f'No configuration has been loaded.')
-        if self._mapping_model is None:
-            raise VEngineException(f'No mapping model has been loaded.')
-            
         template_loader = jinja2.FileSystemLoader(searchpath=self._template_dirpath)
         environment = jinja2.Environment(loader=template_loader,
                                          trim_blocks=True,
                                          lstrip_blocks=True)
-        template = environment.get_template(self._template_file)
-        maps = self._build_template_maps(self._configuration.elements)
-        print(maps)
+        print(f'Configuration: {self._configuration}')
+        template = environment.get_template(pathlib.Path(self._template_filepath).name)
+        maps = self._build_template_maps(self._configuration)
         content = template.render(maps)
         return content
 
-    def load_mapping_model(self, mapping_model_filepath: str) -> None:
-        self._mapping_model = MappingModel.load_from_file(mapping_model_filepath)
-
-    def load_configuration(self, configuration_filepath: str) -> None:
-        self._configuration = load_configuration_from_file(configuration_filepath)
-
-    def load_template(self, template_filepath: str) -> None:
-        path, filename = os.path.split(template_filepath)
-        self._template_dirpath = path
-        self._template_file = filename
-
-    def _build_template_maps(self, config_elements: dict[str, Any]) -> dict[str, Any]:
+    def _build_template_maps(self, configuration: Configuration) -> dict[str, Any]:
+        if self._mapping_file is None:
+            return configuration.elements
         maps: dict[str, Any] = {}  # dict of 'handler' -> Value
-        for element, element_value in config_elements.items():  # for each element in the configuration
+        for element, element_value in configuration.elements.items():  # for each element in the configuration
             handler = element
             value = element_value
-            if element_value:  # if the feature is selected or has a valid value (not None for typed features)
+            if configuration.is_selected(element) and element_value is not None:  # if the feature is selected or has a valid value (not None for typed features)
                 # The handler is provided in the mapping model, otherwise it is the feature's name.
                 if element in self._mapping_model.maps:
                     handler = self._mapping_model.maps[element].handler
@@ -61,10 +56,6 @@ class VEngine:
                     value = [self._build_template_maps(ev) for ev in element_value]
                 maps[handler] = value
         return maps
-
-
-class VEngineException(Exception):
-    pass
 
 
 def load_configuration_from_file(filepath: str) -> Configuration:

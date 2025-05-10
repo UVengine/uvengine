@@ -1,0 +1,29 @@
+{
+  "file": "icecream_fm.uvl",
+  "config": {
+    "\"Ice Cream\"": true,
+    "Category": true,
+    "Scoop": 2,
+    "Flavors": true,
+    "Lemon": false,
+    "Chocolate": [
+      {
+        "Chocolate": true,
+        "White": true,
+        "Dark": false
+      },
+      {
+        "Chocolate": true,
+        "White": false,
+        "Dark": true
+      }
+    ],
+    "Container": true,
+    "Stick": false,
+    "Cup": true,
+    "Cone": false,
+    "Waffle": false,
+    "Waffle.Price": 0.7,
+    "CustomerName": "Josemi"
+  }
+}

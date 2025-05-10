@@ -1,0 +1,12 @@
+Feature, Handler, Value
+SBX, CrossoverOperator, SBXCrossover
+BLXAlpha, CrossoverOperator, BLXAlphaCrossover
+WholeArithmetic, CrossoverOperator, WholeArithmeticCrossover
+Uniform, MutationOperator, UniformMutation
+NonUniform, MutationOperator, NonUniformMutation
+Polynomial, MutationOperator, PolynomialMutation
+LinkedPolynomial, MutationOperator, LinkedPolynomialMutation
+BinaryTournament, SelectionOperator, BinaryTournamentSelection
+NaryTournament, SelectionOperator, NaryTournamentSelection
+Random, SelectionOperator, RandomSelection
+NaryRandom, SelectionOperator, NaryRandomSelection
