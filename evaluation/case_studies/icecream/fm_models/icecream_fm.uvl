@@ -26,8 +26,6 @@ features
                     Sprinkle
             Waffle {Price 0.7}
             String "Name of customer"
-
 constraints
     Popsicle => Stick
     Scoop => Cup | Cone
-    
