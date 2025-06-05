@@ -1,23 +1,18 @@
 from uvengine import UVEngine
 
 
-# Icecream example
-template_dir = 'examples/icecream/templates'
-template_file = 'icecream_template.txt.jinja'
-fm_filepath = 'examples/icecream/fm_models/icecream_fm.uvl'
-config_filepath = 'examples/icecream/configurations/icecream_fm_cone.uvl.json'
-
 # jMetal example
-template_dir = 'examples/jmetal/templates'
+template_dir = 'resources/jmetal/templates'
 template_file = 'AppExample.java.jinja'
-template_filepath = 'examples/jmetal/templates/AppExample.java.jinja'
-fm_filepath = 'examples/jmetal/fm_models/jMetal.uvl'
-config_filepath = 'examples/jmetal/configurations/jMetal.uvl.json'
-mapping_filepath = 'examples/jmetal/mapping_models/jMetal_mapping.csv'
+template_filepath = 'resources/jmetal/templates/AppExample.java.jinja'
+fm_filepath = 'resources/jmetal/fm_models/jMetal.uvl'
+config_filepath = 'resources/jmetal/configurations/jMetal.uvl.json'
+mapping_filepath = 'resources/jmetal/mapping_models/jMetal_mapping.csv'
 
 
 def main() -> None:
-    uvengine = UVEngine(template_filepath=template_filepath,
+    uvengine = UVEngine(fm_model_filepath=fm_filepath,
+                        template_filepath=template_filepath,
                         config_filepath=config_filepath,
                         mapping_filepath=mapping_filepath)
     content = uvengine.resolve_variability()
