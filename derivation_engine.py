@@ -4,15 +4,6 @@ import pathlib
 from uvengine import UVEngine
 
 
-# jMetal example
-template_dir = 'resources/jmetal/templates'
-template_file = 'AppExample.java.jinja'
-template_filepath = 'resources/jmetal/templates/AppExample.java.jinja'
-fm_filepath = 'resources/jmetal/fm_models/jMetal.uvl'
-config_filepath = 'resources/jmetal/configurations/jMetal.uvl.json'
-mapping_filepath = 'resources/jmetal/mapping_models/jMetal_mapping.csv'
-
-
 def main(feature_model_path: str,
          configs_model_path: list[str],
          templates_paths: list[str],
