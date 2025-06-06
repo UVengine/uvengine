@@ -37,10 +37,7 @@ class MappingModel():
             csv_reader = csv.DictReader(file, skipinitialspace=True)
             if any(head not in [fieldname.value for fieldname in MappingModel.Fieldnames] 
                    for head in csv_reader.fieldnames):
-                raise MappingModelException(f"The mapping model '{filepath}' has invalid \
-                                            fieldnames. Use: \
-                                            {[fieldname.value 
-                                              for fieldname in MappingModel.Fieldnames]}")
+                raise MappingModelException(f"The mapping model '{filepath}' has invalid fieldnames. Use: {[fieldname.value for fieldname in MappingModel.Fieldnames]}")
             for row in csv_reader:
                 feature = row[MappingModel.Fieldnames.FEATURE.value]
                 handler = row[MappingModel.Fieldnames.HANDLER.value]
