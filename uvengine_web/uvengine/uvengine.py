@@ -25,7 +25,7 @@ class UVEngine():
         self._mapping_model_file: str | None = mapping_model_filepath
         
         self._configuration: Configuration = load_configurations_from_file(self._configs_path)
-        self._mapping_model: MappingModel = None
+        self._mapping_model: MappingModel = MappingModel()
         if self._mapping_model_file is not None:
             self._mapping_model = MappingModel.load_from_file(self._mapping_model_file)
 
@@ -54,15 +54,14 @@ class UVEngine():
         template_loader = jinja2.FileSystemLoader(searchpath=self.templates_dirpath)
         environment = jinja2.Environment(loader=template_loader,
                                          trim_blocks=True,
-                                         lstrip_blocks=True)
+                                         lstrip_blocks=True,
+                                         keep_trailing_newline=False)
         maps = self._build_template_maps(self.configuration)
         resolved_templates: dict[str, str] = {}
         for template_path in self.templates:
             template = environment.get_template(pathlib.Path(template_path).name)
-            print(maps)
             content = template.render(maps)
             resolved_templates[template_path] = content
-            print(content)
         return resolved_templates
 
     def _build_template_maps(self, configuration: Configuration) -> dict[str, Any]:
@@ -70,7 +69,8 @@ class UVEngine():
         maps: dict[str, Any] = dict(configuration.elements)  # dict of 'handler' -> Value
         for element, element_value in configuration.elements.items():  # for each element in the configuration
             feature = self.feature_model.get_feature_by_name(element)
-            parent = feature.get_parent()
+            if feature is not None:
+                parent = feature.get_parent()
             handler = element
             value = element_value
             if configuration.is_selected(element) and element_value is not None:  # if the feature is selected or has a valid value (not None for typed features)

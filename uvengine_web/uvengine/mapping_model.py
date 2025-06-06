@@ -46,3 +46,6 @@ class MappingModel():
         mapping_model = cls()
         mapping_model.maps = model
         return mapping_model
+
+
+

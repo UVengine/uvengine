@@ -110,13 +110,15 @@ async function runUVEngine(featureModel, configFiles, templateFiles, mainTemplat
 import os
 import zipfile
 from io import BytesIO
+import builtins
 
 import uvengine
 
-feature_model_path = "${feature_model}"
+feature_model_path = "/${feature_model}"
 configs_path = ${JSON.stringify(configs)}
-templates_paths = ${JSON.stringify(templates)}
-mapping_model_filepath = ${mapping === "None" ? "None" : `"${mapping}"`}
+#templates_paths = ${JSON.stringify(templates)}
+templates_paths = ["/${mainTemplate}"]
+mapping_model_filepath = ${mapping === "None" ? "None" : `"/${mapping}"`}
 
 uv = uvengine.UVEngine(
     feature_model_path=feature_model_path,
@@ -139,13 +141,15 @@ with zipfile.ZipFile(memory_file, "w") as zf:
         with open(f, "r", encoding="utf-8") as file:
             zf.writestr(f, file.read())
 memory_file.seek(0)
-result = memory_file.read()
+result = builtins.bytearray(memory_file.read())
   `;
 
   // Ejecutamos el código python y recuperamos el zip resultado (bytes)
   await pyodide.runPythonAsync(pythonCode);
-  const result = pyodide.globals.get("result");
-  return result;
+  const result_pyproxy = pyodide.globals.get("result");
+  const result_uint8array = new Uint8Array(result_pyproxy);
+  result_pyproxy.destroy();  // liberar proxy
+  return result_uint8array;
 }
 
 // Descarga blob con nombre
