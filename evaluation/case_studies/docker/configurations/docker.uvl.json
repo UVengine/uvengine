@@ -1,0 +1,27 @@
+{
+"file": "compose_specification_full.uvl",
+"config": {
+"DockerCompose": true,
+"Version": true,
+"V1": false,
+"Latest": false,
+"Custom": 3.6,
+"ProjectName": "MyWebSite",
+"Services": [
+{
+"ServiceName": "webApp",
+"Build": true,
+"Context": true,
+"GitURL": "https://github.com/jmhorcas/mywebsite.git",
+"Branch": "main"
+},
+{
+"ServiceName": "nginx",
+"Build": true,
+"Context": true,
+"Path": "nginx/",
+"DockerFile": "Dockerfile.yaml"
+}
+]
+}
+}

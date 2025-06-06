@@ -19,7 +19,7 @@ features
                         mandatory
                             Context {abstract}
                                 alternative
-                                    String ContextPath  {default '.'}  // Context path
+                                    String ContextPath  // Context path
                                     String URLGitRepository
                                         [0..1]
                                             String GitBranch

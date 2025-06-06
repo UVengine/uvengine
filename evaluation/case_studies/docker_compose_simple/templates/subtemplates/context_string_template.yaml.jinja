@@ -1,8 +1,0 @@
-{% if service.ContextPath %}
-{{ service.ContextPath }}
-{% else %}
-{{ service.URLGitRepository }}
-{% if service.GitBranch or service.GitTag}
-#{{ service.GitBranch }}{{ service.GitTag }}
-{% endif %}
-{% endif %}

@@ -1,0 +1,9 @@
+Feature, Handler, Value
+V1, Version1,
+Latest, SpecificationVersion, 3.8
+Custom, SpecificationVersion,
+Path, service.ContextPath,
+GitURL, URLGitRepository,
+Branch, GitBranch,
+Tag, GitTag,
+

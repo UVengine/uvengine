@@ -17,7 +17,7 @@ def main(feature_model_path: str,
     # Save the resolved templates to file
     for template_path, content in resolved_templates.items():
         save_template(template_path, content)
-
+        print(content)
 
 def save_template(template_path: str, content: str) -> None:
     """Save the resolved template content to a file."""
