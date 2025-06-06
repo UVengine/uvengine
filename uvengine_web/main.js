@@ -4,6 +4,58 @@ async function loadPyodideAndPackages() {
   pyodide = await loadPyodide();
   // Carga dependencias si se necesitan
   // await pyodide.loadPackage(['numpy']);
+  await pyodide.loadPackage('micropip');
+  await pyodide.runPythonAsync(`
+import micropip
+await micropip.install('jinja2')
+await micropip.install("flamapy/flamapy-2.0.1-py3-none-any.whl", deps=False)
+await micropip.install("flamapy/flamapy_fw-2.0.2.dev0-py3-none-any.whl", deps=False)
+await micropip.install("flamapy/flamapy_fm-2.0.2.dev0-py3-none-any.whl", deps=False)
+await micropip.install("flamapy/flamapy_sat-2.0.1-py3-none-any.whl", deps=False)
+await micropip.install("flamapy/flamapy_bdd-2.0.1-py3-none-any.whl", deps=False)
+await micropip.install("flamapy/dd-0.5.7-py3-none-any.whl", deps=False)
+await micropip.install("flamapy/ply-3.11-py2.py3-none-any.whl", deps=False)
+await micropip.install("flamapy/astutils-0.0.6-py3-none-any.whl", deps=False)
+await micropip.install("flamapy/graphviz-0.20-py3-none-any.whl", deps=False)
+await micropip.install("flamapy/uvlparser-2.0.1-py3-none-any.whl", deps=False)
+await micropip.install("flamapy/afmparser-1.0.3-py3-none-any.whl", deps=False)
+await micropip.install("flamapy/antlr4_python3_runtime-4.13.1-py3-none-any.whl", deps=False)
+  `);
+}
+
+async function loadUVEngineToFS() {
+  if (!pyodide.FS.analyzePath("/uvengine").exists) {
+    pyodide.FS.mkdir("/uvengine");
+  }
+
+  if (!pyodide.FS.analyzePath("/uvengine/utils").exists) {
+    pyodide.FS.mkdir("/uvengine/utils");
+  }
+
+  // Ficheros Python dentro de la carpeta uvengine
+  const moduleFiles = ["__init__.py", 
+                       "uvengine.py", 
+                       "configuration.py", 
+                       "mapping_model.py", 
+                       "variation_point.py",
+                       "utils/__init__.py",
+                       "utils/utils.py"]; // Añade todos los .py que tengas
+
+  for (const filename of moduleFiles) {
+    const response = await fetch(`uvengine/${filename}`);
+    if (!response.ok) {
+      throw new Error(`Failed to fetch uvengine/${filename}`);
+    }
+    const code = await response.text();
+    pyodide.FS.writeFile(`/uvengine/${filename}`, code);
+  }
+
+  // Añadir / al sys.path para importar correctamente
+  await pyodide.runPythonAsync(`
+import sys
+if "/uvengine" not in sys.path:
+    sys.path.insert(0, "/")
+`);
 }
 
 // Obtiene contenido de un fichero como Uint8Array
@@ -64,7 +116,7 @@ import uvengine
 feature_model_path = "${feature_model}"
 configs_path = ${JSON.stringify(configs)}
 templates_paths = ${JSON.stringify(templates)}
-mapping_model_filepath = ${mapping === "None" and "None" or `"${mapping}"`}
+mapping_model_filepath = ${mapping === "None" ? "None" : `"${mapping}"`}
 
 uv = uvengine.UVEngine(
     feature_model_path=feature_model_path,
@@ -190,5 +242,6 @@ document.getElementById("upload-form").addEventListener("submit", async (e) => {
 window.addEventListener("load", async () => {
   document.getElementById("output").innerText = "Loading Pyodide, please wait...";
   await loadPyodideAndPackages();
-  document.getElementById("output").innerText = "Pyodide loaded. Ready.";
+  await loadUVEngineToFS();
+  document.getElementById("output").innerText = "Pyodide loaded. UVEngine ready.";
 });
