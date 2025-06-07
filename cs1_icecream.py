@@ -2,9 +2,9 @@ from derivation_engine import main
 
 
 if __name__ == '__main__':
-    feature_model_path = 'evaluation/case_studies/icecream/fm_models/icecream_fm.uvl'
-    configs_paths = ['evaluation/case_studies/icecream/configurations/icecream_fm_cone.uvl.json']
-    templates_paths = ['evaluation/case_studies/icecream/templates/icecream_template.txt.jinja']
-    mapping_filepath = 'evaluation/case_studies/icecream/mapping_models/icecream_mapping.csv'
+    feature_model_path = 'case_studies/icecream/feature_model/icecream.uvl'
+    configs_paths = ['case_studies/icecream/configurations/cone.json']
+    templates_paths = ['case_studies/icecream/templates/main.txt.jinja']
+    mapping_filepath = 'case_studies/icecream/mapping_model/icecream.csv'
 
     main(feature_model_path, configs_paths, templates_paths, mapping_filepath)

@@ -2,38 +2,44 @@
 - [Table of Contents](#table-of-contents)
 - [UVengine](#uvengine)
   - [Official website](#official-website)
-  - [Artifact description](#artifact-description)
+  - [Description](#description)
   - [How to use it](#how-to-use-it)
   - [Using the library](#using-the-library)
     - [Requirements](#requirements)
     - [Download and install](#download-and-install)
+    - [Usage](#usage)
     - [Execution](#execution)
-    - [Case Studies](#case-studies)
-  - [Video](#video)
-  - [Architecture and repository's structure and contents](#architecture-and-repositorys-structure-and-contents)
-    - [Software architecture](#software-architecture)
-    - [Repository's structure and contents](#repositorys-structure-and-contents)
+      - [Executing the Case Studies](#executing-the-case-studies)
   - [References and third-party software](#references-and-third-party-software)
 
 # UVengine
-Universal Variability resolution engine for UVL with Jinja templates.
+Universal Variability resolution engine for [UVL](https://universal-variability-language.github.io/) models and text-based artifacts with [Jinja templates](https://jinja.palletsprojects.com/en/stable/).
+
+<p align="center">
+  <img width="750" src="uvengine_overview.png">
+</p>
+
 
 ## Official website
 - [UVengine](https://uvengine.github.io/)
 
 
-python derivation_engine.py -fm evaluation/case_studies/icecream/fm_models/icecream_fm.uvl -c evaluation/case_studies/icecream/configurations/icecream_fm_cone.uvl.json -t evaluation/case_studies/icecream/templates/icecream_template.txt.jinja -m evaluation/case_studies/icecream/mapping_models/icecream_mapping.csv
+## Description
+*UVengine* is a variability resolution engine for [UVL](https://universal-variability-language.github.io/) models and text-based artifacts with [Jinja templates](https://jinja.palletsprojects.com/en/stable/).
 
 
-
-## Artifact description
-*UVengine* is a universal variability resolution engine for [UVL](https://universal-variability-language.github.io/) with [Jinja templates](https://jinja.palletsprojects.com/en/stable/).
-
+Its main features are:
+- A variability resolution engine for UVL models.
+- Support all language level extensions of UVL.
+- Feature traceability between UVL models and implementation artifacts.
+- Language independence for any text-based artifacts using Jinja templates.
+- Composition and annotation-based mechanisms to implement variability at different degrees of granularity.
+- Easy integration with existing tools of the UVL ecosystem such as UVLS and flamapy.
 
 ## How to use it
-The tool is currently deployed and available online in the following link: 
+The tool is currently deployed and available online in the following link so that you don't need to install any stuff: 
 
-https://fmfactlabel.adabyron.uma.es/
+https://uvengine.github.io/
 
 The main use case of the tool is uploading the files and it automatically resolves the variability.
 - Inputs:
@@ -51,6 +57,7 @@ The main use case of the tool is uploading the files and it automatically resolv
 
 
 ## Using the library
+In case you want to use UVengine programatically as a library or using CLI.
 
 ### Requirements
 - [Python 3.9+](https://www.python.org/)
@@ -67,6 +74,7 @@ The main use case of the tool is uploading the files and it automatically resolv
 3. Create a virtual environment: 
    
    `python -m venv env`
+
 4. Activate the environment: 
    
    In Linux: `source env/bin/activate`
@@ -77,37 +85,63 @@ The main use case of the tool is uploading the files and it automatically resolv
    
    `pip install -r requirements.txt`
 
-   
+
+### Usage
+
+The [derivation_engine.py](derivation_engine.py) script illustrate how to use UVengine programatically.
+
+Basically:
+
+```
+# Import the UVengine 
+from uvengine import UVEngine
+
+# Instantiate the engine
+uvengine = UVEngine(feature_model_path=<<path_to_your_feature_model>>,
+                    configs_path=<<list_of_paths_to_your_configs_files>>,
+                    templates_paths=<<list_of_paths_to_your_template_files>>,
+                    mapping_model_filepath=<<path_to_your_mapping_model_files>>)
+# Resolve the variability                    
+resolved_templates = uvengine.resolve_variability()
+
+# Save the resolved templates to file and print the content to the standard output
+for template_path, content in resolved_templates.items():
+    # Rename output file for avoiding overriding original templates and remove .jinja extension
+    output_file = pathlib.Path(template_path).with_name(pathlib.Path(template_path).stem + '_resolved' + ''.join(pathlib.Path(template_path).suffixes).replace('.jinja', ''))  
+    with open(output_file, 'w', encoding='utf-8') as file:
+      file.write(content)
+    print(content)
+```
 
 ### Execution
+The [derivation_engine.py](derivation_engine.py) script is also the entry point interface to resolve the variability from the given inputs.
 
-### Case Studies
+To resolve the variability over any input, execute: 
+
+  `python derivation_engine.py -fm FEATURE_MODEL -c CONFIGS [CONFIGS ...] -t TEMPLATES [TEMPLATES ...] [-m MAPPING_FILE]`
+
+  where:
+
+  `-fm FEATURE_MODEL`: Feature model in UVL (.uvl).
+
+  `-c CONFIGS [CONFIGS ...]`: Configuration files (.json) or directy with configurations (in case of a single configuration split in multiple files).
+
+  `-t TEMPLATES [TEMPLATES ...]`: Template files (.jinja) or directory with templates over which the variability is resolved.
+
+  `[-m MAPPING_FILE]`: Optional file with the mapping between the features in the feature model and the variation points and variants in the templates (.csv).
+
+Example:
+
+  `python derivation_engine.py -fm case_studies/icecream/feature_model/icecream.uvl -c case_studies/icecream/configurations/cone.json -t case_studies/icecream/templates/main.txt.jinja -m case_studies/icecream/mapping_model/icecream.csv`
+
+As result, the final product (i.e., the templates with the variability resolved) are generated in the same template folder provided with the suffixes `_resolved`.
+    
+#### Executing the Case Studies
 To facilitate the execution of the different case studies, we have prepared a Python script for each case study:
 
 - Ice cream: `python cs1_icecream.py`
 
 - Docker: `python cs2_docker.py`
-
-
-## Video
-
-https://user-images.githubusercontent.com/1789503/172726157-11ebe212-41f6-47a1-9ab7-ee378ed1aab7.mp4
-
-
-## Architecture and repository's structure and contents
-Here is a description of the architecture of the tool and the folders' structure and contents of this repository for those interesting in contributing to the project.
-
-### Software architecture
-
-![Software architecture](resources/architecture.png "Software architecture")
-
-The tool offers a web service to upload the feature model and its metadata via an online form (`Web Service` component). It supports feature models in UVL and FeatureIDE formats. The `FM Characterization` module in the server-side gathers and manages all the feature model information. We distinguish three kinds of information: metadata (`FM Metadata`), structural metrics (`FM Metrics`), and analysis results (`FM Analysis`), treating all of them as an `FM property`. Each `FM Property` includes a name, a description, and a parent property for hierarchical organization in the fact label. Properties are associated with an `FM Property Measure` that provides the specific values of the property. For instance, the list of abstract features, their size, and ratio for the `ABSTRACT FEATURES` property. Analysis tasks are delegated to external tools, with the current implementation relying on [flama](https://www.flamapy.org/) (dark component).
-
-### Repository's structure and contents
-- [run.py](run.py): It is the entry point of the application that consists on a [Flask](https://flask.palletsprojects.com/en/3.0.x/) server to expose the tool's functionality.
-- [fm_characterization](fm_characterization/): Contains the code related to the server-side of the architecture in charge of gathering all the information of the feature model that is needed to build the fact label. Concretely, it contains the `FM Characterization`, `FM Metadata`, `FM Metrics`, `FM Analysis`, `FM property`, and `FM Property Measure` modules, among other utils. The dependency with the [flama](https://www.flamapy.org/) library is on the `FM Analysis` module.
-- [web](web/): Contains the code related with the client-side of the architecture in charge of building the visualization of the fact label from the JSON information provided by the server-side. Concretely, it contains the HTML, CSS, and JavaScript files, where the most important is the [fm_fact_label.js](web/js/fm_fact_label/fm_fact_label.js) script which contains the main code in [D3.js](https://d3js.org/) to build the visualization of the fact label. Also, the [fm_models](web/fm_models) contains the feature models examples availables in the tool.
-- [resources](resources/): Contains the images and videos used in this README.md file.
 
 
 ## References and third-party software
