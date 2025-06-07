@@ -4,6 +4,7 @@
   - [Official website](#official-website)
   - [Description](#description)
   - [How to use it](#how-to-use-it)
+    - [Video demo](#video-demo)
   - [Using the library](#using-the-library)
     - [Requirements](#requirements)
     - [Download and install](#download-and-install)
@@ -50,10 +51,8 @@ The main use case of the tool is uploading the files and it automatically resolv
 - Outputs:
   - The artifacts with their variability resolved.
 
-
-<video width="320" height="240" controls>
-  <source src="resources/video_demo.mp4" type="video/mp4">
-</video>
+### Video demo
+[![Watch the video demo](https://img.youtube.com/vi/QrgqtMBVz68/0.jpg)](https://youtu.be/QrgqtMBVz68)
 
 
 ## Using the library
