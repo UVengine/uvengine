@@ -16,7 +16,7 @@
 Universal Variability resolution engine for [UVL](https://universal-variability-language.github.io/) models and text-based artifacts with [Jinja templates](https://jinja.palletsprojects.com/en/stable/).
 
 <p align="center">
-  <img width="750" src="uvengine_overview.png">
+  <img width="750" src="resources/uvengine_overview.png">
 </p>
 
 
