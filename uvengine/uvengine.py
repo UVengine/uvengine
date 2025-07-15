@@ -1,13 +1,16 @@
-import json
 import pathlib
 from typing import Any
 
 import jinja2
 
-from flamapy.metamodels.fm_metamodel.models import FeatureModel, Feature
+from flamapy.metamodels.configuration_metamodel.models import Configuration
+from flamapy.metamodels.configuration_metamodel.transformations import (
+    UVLSJSONReader,
+    ConfigurationJSONReader
+)
+from flamapy.metamodels.fm_metamodel.models import FeatureModel
 from flamapy.metamodels.fm_metamodel.transformations import UVLReader
 
-from uvengine.configuration import Configuration
 from uvengine.mapping_model import MappingModel
 
 
@@ -69,6 +72,7 @@ class UVEngine():
         maps: dict[str, Any] = dict(configuration.elements)  # dict of 'handler' -> Value
         for element, element_value in configuration.elements.items():  # for each element in the configuration
             feature = self.feature_model.get_feature_by_name(element)
+            parent = None
             if feature is not None:
                 parent = feature.get_parent()
             handler = element
@@ -95,9 +99,16 @@ class UVEngine():
 
 
 def load_configurations_from_file(configs_path: list[str]) -> Configuration:
-    configuration = {}
+    elements = {}
     for filepath in configs_path:
-        with open(filepath) as file:
-            json_dict = json.load(file)
-        configuration.update(json_dict['config'])
-    return Configuration(configuration)
+        if filepath.endswith('.uvl.json'):
+            config = UVLSJSONReader(filepath).transform()
+        elif filepath.endswith('.json'):
+            config = ConfigurationJSONReader(filepath).transform()
+            if 'config' in config.elements:
+                # Handle case where the JSON file has a 'config' key and a wrong extension
+                config = UVLSJSONReader(filepath).transform()
+        else:
+            raise ValueError(f"Unsupported configuration file format: {filepath}")
+        elements.update(config.elements)
+    return Configuration(elements)
