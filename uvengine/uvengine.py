@@ -9,7 +9,7 @@ from flamapy.metamodels.configuration_metamodel.transformations import (
     ConfigurationJSONReader
 )
 from flamapy.metamodels.fm_metamodel.models import FeatureModel
-from flamapy.metamodels.fm_metamodel.transformations import UVLReader
+from flamapy.metamodels.fm_metamodel.transformations import UVLReader, FlatFM
 
 from uvengine.mapping_model import MappingModel
 
@@ -22,6 +22,9 @@ class UVEngine():
                  templates_paths: list[str],
                  mapping_model_filepath: str = None) -> None:
         self._feature_model: FeatureModel = UVLReader(feature_model_path).transform()
+        flatFM_op = FlatFM(self._feature_model)
+        flatFM_op.set_maintain_namespaces(False)  # Do not maintain namespaces in the FM
+        self._feature_model = flatFM_op.transform()  # Flatten the FM
         self._templates_dirpath: str = pathlib.Path(templates_paths[0]).parent
         self._templates_paths: list[str] = templates_paths
         self._configs_path: list[str] = configs_path
