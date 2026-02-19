@@ -66,7 +66,7 @@ class UVEngine():
         resolved_templates: dict[str, str] = {}
         for template_path in self.templates:
             template = environment.get_template(pathlib.Path(template_path).name)
-            content = template.render(maps)
+            content = template.render(maps, config=maps)
             resolved_templates[template_path] = content
         return resolved_templates
 
