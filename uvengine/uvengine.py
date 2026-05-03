@@ -93,10 +93,10 @@ class UVEngine():
                     value = [self._build_template_maps(Configuration(ev)) for ev in element_value]
                 # Automatic value for alternative variation points (we use the selected children of alternative features as value of the variation point) 
                 # for those elements that are not in the mapping model
-                if element not in self.mapping_model.maps:
-                    if parent is not None and parent.is_alternative_group():
-                        handler = parent.name
-                        value = element
+                # if element not in self.mapping_model.maps:
+                #     if parent is not None and parent.is_alternative_group():
+                #         handler = parent.name
+                #         value = element
                 maps[handler] = value
         return maps
 

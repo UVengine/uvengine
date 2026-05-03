@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "uvengine"
-version = "1.0.2"
+version = "1.0.4"
 description = "Variability resolution engine for UVL models and text-based implementation artifacts."
 readme = "README.md"
 requires-python = ">=3.11"
